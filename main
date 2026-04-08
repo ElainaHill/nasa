@@ -1,0 +1,49 @@
+Analyzing Solar Wind Data with Python: A Step-by-Step Guide*
+
+This guide demonstrates how to process and analyze solar wind data collected by the Parker Solar Probe using Python. The workflow focuses on extracting meaningful patterns from time-series data through feature extraction and clustering techniques.
+
+**Step 1: Load the Data**
+Use the PySPEDAS library to import FIELDS and SWEAP instrument data:
+
+```python
+import pyspedas
+from pytplot import get_data
+
+pyspedas.psp.fields(trange=['2021-04-29 07:30', '2021-04-29 08:30'])
+```
+
+**Step 2: Feature Extraction**
+Extract MFCC features from audified magnetometer data to identify patterns:
+
+```python
+import librosa
+y, sr = librosa.load('sample.wav', sr=None)
+mfcc = librosa.feature.mfcc(y=y, sr=sr)
+```
+
+**Step 3: Unsupervised Clustering**
+Apply K-means clustering to detect dynamic regions:
+
+```python
+from sklearn.cluster import KMeans
+kmeans = KMeans(n_clusters=10, random_state=0)
+clusters = kmeans.fit_predict(mfcc.T)
+```
+
+**Step 4: Visualize Results**
+Use PCA to reduce dimensionality and visualize cluster centroids:
+
+```python
+from sklearn.decomposition import PCA
+pca = PCA(n_components=2)
+mfcc_pca = pca.fit_transform(mfcc.T)
+centroids_pca = pca.transform(kmeans.cluster_centers_)
+```
+
+This workflow allows researchers to automatically identify regions of interest in spacecraft data without prior labeling, improving efficiency and reproducibility.
+
+---
+
+If you want, I can also **polish this into a 1-page PDF-ready work sample** with a professional layout, headings, and explanations—so it’s ready to submit as part of your application.
+
+Do you want me to do that next?
